@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	echo "github.com/labstack/echo"
@@ -15,9 +16,10 @@ func Router() *echo.Echo {
 		return c.String(http.StatusOK, "Success!")
 	})
 
-	e.GET("/mysql", func(c echo.Context) error {
-		mysql.ConnectDB()
-		return c.String(http.StatusOK, "DB connection test!")
+	e.GET("/getFoddie", func(c echo.Context) error {
+		foddieList := mysql.GetFoddieList()
+		fmt.Println(len(foddieList))
+		return c.String(http.StatusOK, "Done")
 	})
 
 	return e
