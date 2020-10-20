@@ -81,11 +81,86 @@ func GetFoddieList() []m.Foddie {
 	return allFoddie
 }
 
-//struct type to json
-// 1. json.Marchal
-// 2. string
+// GetShoppingList func
+func GetShoppingList() []m.Shopping {
+	DB := ConnectDB()
+	defer DB.Close()
 
-// ex
-// js, err := json.Marshal(foddie)
-// utils.CheckErr(err)
-// fmt.Println(string(js))
+	var shop m.Shopping
+	var allShops []m.Shopping
+
+	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM `shopping`"
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&shop.Xpoint, &shop.Ypoint, &shop.Title, &shop.Tag, &shop.LikeCnt, &shop.Addr, &shop.Insta, &shop.Thumb)
+		utils.CheckErr(err)
+
+		allShops = append(allShops, shop)
+	}
+
+	return allShops
+}
+
+// GetSubwayList func
+func GetSubwayList() []m.Subway {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	var subway m.Subway
+	var allSubways []m.Subway
+
+	query := "SELECT xpoint_wgs, ypoint_wgs, station_nm, station_cd, line_num, fr_code, cyber_st_code FROM `subway`"
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&subway.XpointWgs, &subway.YpointWgs, &subway.StationNm, &subway.StationCd, &subway.LineNum, &subway.FrCode, &subway.CyberStCode)
+		utils.CheckErr(err)
+
+		allSubways = append(allSubways, subway)
+	}
+
+	return allSubways
+}
+
+// GetSubwayLatLng func
+func GetSubwayLatLng(subwayName string) m.Subway {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	var subway m.Subway
+
+	query := "SELECT xpoint_wgs, ypoint_wgs, station_nm, station_cd, line_num, fr_code, cyber_st_code FROM `subway` WHERE station_nm=?"
+	err := DB.QueryRow(query, subwayName).Scan(&subway.XpointWgs, &subway.YpointWgs, &subway.StationNm, &subway.StationCd, &subway.LineNum, &subway.FrCode, &subway.CyberStCode)
+	utils.CheckErr(err)
+
+	return subway
+}
+
+// GetFoddieLatLng func
+func GetFoddieLatLng(dbName string) []m.PlaceLatLng {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	var place m.PlaceLatLng
+	var allPlaces []m.PlaceLatLng
+
+	query := "SELECT idx, title, xpoint, ypoint FROM " + dbName
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	for rows.Next() {
+		err := rows.Scan(&place.Idx, &place.Title, &place.XpointWgs, &place.YpointWgs)
+		utils.CheckErr(err)
+
+		allPlaces = append(allPlaces, place)
+	}
+
+	return allPlaces
+}

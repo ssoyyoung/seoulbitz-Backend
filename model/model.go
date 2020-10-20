@@ -45,3 +45,18 @@ type Subway struct {
 	FrCode      string
 	CyberStCode string
 }
+
+// PlaceLatLng struct
+type PlaceLatLng struct {
+	Idx       int
+	Title     string
+	XpointWgs string
+	YpointWgs string
+}
+
+// TwoPointDistance struct
+type TwoPointDistance struct {
+	Subway      string
+	Destination string
+	Distance    float64
+}

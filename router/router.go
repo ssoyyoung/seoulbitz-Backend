@@ -1,11 +1,10 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 
 	echo "github.com/labstack/echo"
-	mysql "github.com/ssoyyoung.p/seoulbitz-Backend/mysql"
+	handler "github.com/ssoyyoung.p/seoulbitz-Backend/handler"
 )
 
 // Router function
@@ -16,11 +15,11 @@ func Router() *echo.Echo {
 		return c.String(http.StatusOK, "Success!")
 	})
 
-	e.GET("/getFoddie", func(c echo.Context) error {
-		foddieList := mysql.GetFoddieList()
-		fmt.Println(len(foddieList))
-		return c.String(http.StatusOK, "Done")
-	})
+	e.GET("/getFoddie", handler.GetFoddieList)
+	e.GET("/getShop", handler.GetShoppingList)
+	e.GET("/getSubway", handler.GetSubwayList)
+
+	e.POST("/nearSubway/:subway/:type", handler.GetNearSubway)
 
 	return e
 }
