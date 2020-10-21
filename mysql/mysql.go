@@ -3,6 +3,7 @@ package mysql
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -143,8 +144,8 @@ func GetSubwayLatLng(subwayName string) m.Subway {
 	return subway
 }
 
-// GetFoddieLatLng func
-func GetFoddieLatLng(dbName string) []m.PlaceLatLng {
+// GetPlaceLatLng func
+func GetPlaceLatLng(dbName string) []m.PlaceLatLng {
 	DB := ConnectDB()
 	defer DB.Close()
 
@@ -163,4 +164,38 @@ func GetFoddieLatLng(dbName string) []m.PlaceLatLng {
 	}
 
 	return allPlaces
+}
+
+// InsertFoddie func
+func InsertFoddie(foddie *m.Foddie) string {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	query := "INSERT INTO foodie (xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	result, err := DB.Exec(query, foddie.Xpoint, foddie.Ypoint, foddie.Title, foddie.Tag, foddie.LikeCnt, foddie.Addr, foddie.Insta, foddie.Thumb)
+	utils.CheckErr(err)
+
+	n, err := result.RowsAffected()
+	if n == 1 {
+		fmt.Println("1 row inserted!")
+	}
+
+	return "Insert!"
+}
+
+// InsertShop func
+func InsertShop(shopping *m.Shopping) string {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	query := "INSERT INTO shopping (xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	result, err := DB.Exec(query, shopping.Xpoint, shopping.Ypoint, shopping.Title, shopping.Tag, shopping.LikeCnt, shopping.Addr, shopping.Insta, shopping.Thumb)
+	utils.CheckErr(err)
+
+	n, err := result.RowsAffected()
+	if n == 1 {
+		fmt.Println("1 row inserted!")
+	}
+
+	return "Insert!"
 }

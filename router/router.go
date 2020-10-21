@@ -21,5 +21,8 @@ func Router() *echo.Echo {
 
 	e.POST("/nearSubway/:subway/:type", handler.GetNearSubway)
 
+	e.POST("/insertFoddie", handler.InsertFoddie)
+	e.POST("/insertShop", handler.InsertShop)
+
 	return e
 }

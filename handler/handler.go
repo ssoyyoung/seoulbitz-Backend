@@ -43,7 +43,7 @@ func GetNearSubway(c echo.Context) error {
 	shopType := c.Param("type")
 
 	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
-	placeList := mysql.GetFoddieLatLng(shopType)
+	placeList := mysql.GetPlaceLatLng(shopType)
 
 	PointDis := m.TwoPointDistance{}
 	AllPointDis := []m.TwoPointDistance{}
@@ -65,4 +65,28 @@ func GetNearSubway(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, AllPointDis)
+}
+
+// InsertFoddie func
+func InsertFoddie(c echo.Context) error {
+	place := new(m.Foddie)
+
+	if err := c.Bind(place); err != nil {
+		return c.String(http.StatusBadRequest, "request failed!")
+	}
+
+	res := mysql.InsertFoddie(place)
+	return c.String(http.StatusOK, res)
+}
+
+// InsertShop func
+func InsertShop(c echo.Context) error {
+	place := new(m.Shopping)
+
+	if err := c.Bind(place); err != nil {
+		return c.String(http.StatusBadRequest, "request failed!")
+	}
+
+	res := mysql.InsertShop(place)
+	return c.String(http.StatusOK, res)
 }
