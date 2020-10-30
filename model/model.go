@@ -9,8 +9,8 @@ type DBinfo struct {
 	Database string
 }
 
-// Foddie  struct
-type Foddie struct {
+// Foodie  struct
+type Foodie struct {
 	Xpoint  string
 	Ypoint  string
 	Title   string

@@ -15,14 +15,24 @@ func Router() *echo.Echo {
 		return c.String(http.StatusOK, "Success!")
 	})
 
-	e.GET("/getFoddie", handler.GetFoddieList)
-	e.GET("/getShop", handler.GetShoppingList)
-	e.GET("/getSubway", handler.GetSubwayList)
+	getData := e.Group("/getData")
+	{
+		getData.GET("/foodie", handler.GetFoodieList)
+		getData.GET("/shop", handler.GetShoppingList)
+		getData.GET("/subway", handler.GetSubwayList)
+	}
 
-	e.POST("/nearSubway/:subway/:type", handler.GetNearSubway)
+	getNearPlace := e.Group("/getNear")
+	{
+		getNearPlace.POST("/foodie/:subway", handler.GetNearFoodiePlace)
+		getNearPlace.POST("/shop/:subway", handler.GetNearShopPlace)
+	}
 
-	e.POST("/insertFoddie", handler.InsertFoddie)
-	e.POST("/insertShop", handler.InsertShop)
+	insertData := e.Group("/insert")
+	{
+		insertData.POST("/foodie", handler.InsertFoodie)
+		insertData.POST("/shop", handler.InsertShop)
+	}
 
 	return e
 }

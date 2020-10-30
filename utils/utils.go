@@ -4,6 +4,8 @@ import (
 	"log"
 	"math"
 	"strconv"
+
+	m "github.com/ssoyyoung.p/seoulbitz-Backend/model"
 )
 
 // CheckErr func
@@ -51,4 +53,28 @@ func StrToFloat64(val string) float64 {
 	CheckErr(err)
 
 	return f64
+}
+
+// CalculateDistance func
+func CalculateDistance(subwayName string, subWayLatLng m.Subway, placeList []m.PlaceLatLng) []m.TwoPointDistance {
+	PointDis := m.TwoPointDistance{}
+	AllPointDis := []m.TwoPointDistance{}
+
+	for _, place := range placeList {
+		distance := CalculateLatAndLng(
+			StrToFloat64(subWayLatLng.XpointWgs),
+			StrToFloat64(subWayLatLng.YpointWgs),
+			StrToFloat64(place.XpointWgs),
+			StrToFloat64(place.YpointWgs),
+			"K",
+		)
+
+		PointDis.Subway = subwayName
+		PointDis.Destination = place.Title
+		PointDis.Distance = distance
+
+		AllPointDis = append(AllPointDis, PointDis)
+	}
+
+	return AllPointDis
 }

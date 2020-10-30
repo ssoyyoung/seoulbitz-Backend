@@ -49,7 +49,7 @@ func SingleDataQuery() string {
 	defer DB.Close()
 
 	var title string
-	query := "SELECT title FROM foodie LIMIT 1"
+	query := "SELECT title FROM Foodie LIMIT 1"
 	err := DB.QueryRow(query).Scan(&title)
 
 	utils.CheckErr(err)
@@ -58,28 +58,28 @@ func SingleDataQuery() string {
 
 }
 
-// GetFoddieList func
-func GetFoddieList() []m.Foddie {
+// GetFoodieList func
+func GetFoodieList() []m.Foodie {
 	DB := ConnectDB()
 	defer DB.Close()
 
-	var foddie m.Foddie
-	var allFoddie []m.Foddie
+	var Foodie m.Foodie
+	var allFoodie []m.Foodie
 
-	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM `foodie`"
+	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM `Foodie`"
 	rows, err := DB.Query(query)
 	utils.CheckErr(err)
 
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&foddie.Xpoint, &foddie.Ypoint, &foddie.Title, &foddie.Tag, &foddie.LikeCnt, &foddie.Addr, &foddie.Insta, &foddie.Thumb)
+		err := rows.Scan(&Foodie.Xpoint, &Foodie.Ypoint, &Foodie.Title, &Foodie.Tag, &Foodie.LikeCnt, &Foodie.Addr, &Foodie.Insta, &Foodie.Thumb)
 		utils.CheckErr(err)
 
-		allFoddie = append(allFoddie, foddie)
+		allFoodie = append(allFoodie, Foodie)
 	}
 
-	return allFoddie
+	return allFoodie
 }
 
 // GetShoppingList func
@@ -166,13 +166,13 @@ func GetPlaceLatLng(dbName string) []m.PlaceLatLng {
 	return allPlaces
 }
 
-// InsertFoddie func
-func InsertFoddie(foddie *m.Foddie) string {
+// InsertFoodie func
+func InsertFoodie(Foodie *m.Foodie) string {
 	DB := ConnectDB()
 	defer DB.Close()
 
-	query := "INSERT INTO foodie (xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-	result, err := DB.Exec(query, foddie.Xpoint, foddie.Ypoint, foddie.Title, foddie.Tag, foddie.LikeCnt, foddie.Addr, foddie.Insta, foddie.Thumb)
+	query := "INSERT INTO Foodie (xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	result, err := DB.Exec(query, Foodie.Xpoint, Foodie.Ypoint, Foodie.Title, Foodie.Tag, Foodie.LikeCnt, Foodie.Addr, Foodie.Insta, Foodie.Thumb)
 	utils.CheckErr(err)
 
 	n, err := result.RowsAffected()

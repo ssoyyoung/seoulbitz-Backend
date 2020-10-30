@@ -10,13 +10,13 @@ import (
 	utils "github.com/ssoyyoung.p/seoulbitz-Backend/utils"
 )
 
-// GetFoddieList func
-func GetFoddieList(c echo.Context) error {
-	foddieList := mysql.GetFoddieList()
+// GetFoodieList func
+func GetFoodieList(c echo.Context) error {
+	FoodieList := mysql.GetFoodieList()
 
-	fmt.Printf("Total foddie's list count is %d \n", len(foddieList))
+	fmt.Printf("Total Foodie's list count is %d \n", len(FoodieList))
 
-	return c.JSON(http.StatusOK, foddieList)
+	return c.JSON(http.StatusOK, FoodieList)
 }
 
 // GetShoppingList func
@@ -37,45 +37,41 @@ func GetSubwayList(c echo.Context) error {
 	return c.JSON(http.StatusOK, subwayList)
 }
 
-// GetNearSubway func
-func GetNearSubway(c echo.Context) error {
+// GetNearFoodiePlace func
+func GetNearFoodiePlace(c echo.Context) error {
 	subwayName := c.Param("subway")
-	shopType := c.Param("type")
+	shopType := "foodie"
 
 	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
 	placeList := mysql.GetPlaceLatLng(shopType)
 
-	PointDis := m.TwoPointDistance{}
-	AllPointDis := []m.TwoPointDistance{}
-
-	for _, place := range placeList {
-		distance := utils.CalculateLatAndLng(
-			utils.StrToFloat64(subWayLatLng.XpointWgs),
-			utils.StrToFloat64(subWayLatLng.YpointWgs),
-			utils.StrToFloat64(place.XpointWgs),
-			utils.StrToFloat64(place.YpointWgs),
-			"K",
-		)
-
-		PointDis.Subway = subwayName
-		PointDis.Destination = place.Title
-		PointDis.Distance = distance
-
-		AllPointDis = append(AllPointDis, PointDis)
-	}
+	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
 
 	return c.JSON(http.StatusOK, AllPointDis)
 }
 
-// InsertFoddie func
-func InsertFoddie(c echo.Context) error {
-	place := new(m.Foddie)
+// GetNearShopPlace func
+func GetNearShopPlace(c echo.Context) error {
+	subwayName := c.Param("subway")
+	shopType := "shopping"
+
+	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
+	placeList := mysql.GetPlaceLatLng(shopType)
+
+	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
+
+	return c.JSON(http.StatusOK, AllPointDis)
+}
+
+// InsertFoodie func
+func InsertFoodie(c echo.Context) error {
+	place := new(m.Foodie)
 
 	if err := c.Bind(place); err != nil {
 		return c.String(http.StatusBadRequest, "request failed!")
 	}
 
-	res := mysql.InsertFoddie(place)
+	res := mysql.InsertFoodie(place)
 	return c.String(http.StatusOK, res)
 }
 
