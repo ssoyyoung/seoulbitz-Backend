@@ -56,7 +56,6 @@ type PlaceLatLng struct {
 
 // TwoPointDistance struct
 type TwoPointDistance struct {
-	Subway      string
 	Destination string
 	Distance    float64
 }

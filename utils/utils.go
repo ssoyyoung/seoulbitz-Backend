@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"math"
+	"sort"
 	"strconv"
 
 	m "github.com/ssoyyoung.p/seoulbitz-Backend/model"
@@ -69,12 +70,42 @@ func CalculateDistance(subwayName string, subWayLatLng m.Subway, placeList []m.P
 			"K",
 		)
 
-		PointDis.Subway = subwayName
 		PointDis.Destination = place.Title
 		PointDis.Distance = distance
 
 		AllPointDis = append(AllPointDis, PointDis)
 	}
 
+	AllPointDis = OrderedValue(AllPointDis)
+
 	return AllPointDis
+}
+
+// OrderedValue func
+func OrderedValue(AllPointDis []m.TwoPointDistance) []m.TwoPointDistance {
+
+	orderVal := make(map[float64]string)
+	returnVal := []m.TwoPointDistance{}
+	value := m.TwoPointDistance{}
+
+	for _, val := range AllPointDis {
+		orderVal[val.Distance] = val.Destination
+	}
+
+	keys := make([]float64, 0)
+	for k := range orderVal {
+		keys = append(keys, k)
+	}
+
+	sort.Float64s(keys)
+
+	for _, k := range keys {
+		value.Destination = orderVal[k]
+		value.Distance = k
+
+		returnVal = append(returnVal, value)
+	}
+
+	return returnVal
+
 }

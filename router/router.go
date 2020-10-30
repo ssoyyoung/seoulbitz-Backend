@@ -34,5 +34,8 @@ func Router() *echo.Echo {
 		insertData.POST("/shop", handler.InsertShop)
 	}
 
+	// Done : getNearPlace order by
+	// TODO : update place
+
 	return e
 }
