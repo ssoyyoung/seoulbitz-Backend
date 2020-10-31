@@ -1,2 +1,4 @@
 parsing.py
 mysql/info.json
+privkey.pem
+cert.pem

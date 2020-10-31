@@ -4,12 +4,20 @@ import (
 	"net/http"
 
 	echo "github.com/labstack/echo"
+	middleware "github.com/labstack/echo/middleware"
 	handler "github.com/ssoyyoung.p/seoulbitz-Backend/handler"
 )
 
 // Router function
 func Router() *echo.Echo {
 	e := echo.New()
+
+	e.Use(middleware.Logger())                             //Setting logger
+	e.Use(middleware.Recover())                            //Recover from panics anywhere in the chain
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{ //CORS Middleware
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+	}))
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Success!")
