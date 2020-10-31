@@ -33,7 +33,7 @@ func ConnectDB() *sql.DB {
 
 	db, err := sql.Open("mysql", DBinfo)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	// See "Important settings" section.
 	db.SetConnMaxLifetime(time.Minute * 3)
@@ -66,7 +66,7 @@ func GetFoodieList() []m.Foodie {
 	var Foodie m.Foodie
 	var allFoodie []m.Foodie
 
-	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM `Foodie`"
+	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM `foodie`"
 	rows, err := DB.Query(query)
 	utils.CheckErr(err)
 
