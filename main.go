@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	debug := true
+	debug := false
 	echoR := router.Router()
 
 	fmt.Println("Start echo server..")
