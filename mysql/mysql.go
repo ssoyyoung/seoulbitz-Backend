@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"time"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql" // go get -u github.com/go-sql-driver/mysql
 	m "github.com/ssoyyoung.p/seoulbitz-Backend/model"
@@ -197,4 +198,30 @@ func InsertShop(shopping *m.Shopping) string {
 	}
 
 	return "Insert!"
+}
+
+// GetInfos func
+func GetInfos(dbName string, places []string) []m.Foodie {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	placeList := strings.Join(places, "','")
+
+	var Foodie m.Foodie
+	var allFoodie []m.Foodie
+
+	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM "+ dbName +" WHERE title IN ('"+placeList+"')"
+	fmt.Println(query)
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	for rows.Next() {
+		err := rows.Scan(&Foodie.Xpoint, &Foodie.Ypoint, &Foodie.Title, &Foodie.Tag,
+						&Foodie.LikeCnt, &Foodie.Addr, &Foodie.Insta, &Foodie.Thumb)
+		utils.CheckErr(err)
+
+		allFoodie = append(allFoodie, Foodie)
+	}
+
+	return allFoodie
 }

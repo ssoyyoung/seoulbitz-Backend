@@ -47,6 +47,14 @@ func GetNearFoodiePlace(c echo.Context) error {
 
 	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
 
+	var resultPlace []string
+	for _, Point := range AllPointDis[:10] {
+		resultPlace = append(resultPlace, Point.Destination)
+	}
+
+	infos := mysql.GetInfos("foodie",resultPlace)
+	fmt.Println(infos)
+
 	return c.JSON(http.StatusOK, AllPointDis[:10])
 }
 
