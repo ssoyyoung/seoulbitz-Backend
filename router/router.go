@@ -32,7 +32,7 @@ func Router() *echo.Echo {
 
 	getNearPlace := e.Group("/getNear")
 	{
-		getNearPlace.POST("/foodie/:subway", handler.GetNearFoodiePlace)
+		getNearPlace.POST("/foodie", handler.GetNearFoodiePlace)
 		getNearPlace.POST("/shop/:subway", handler.GetNearShopPlace)
 	}
 
@@ -42,7 +42,7 @@ func Router() *echo.Echo {
 		insertData.POST("/shop", handler.InsertShop)
 	}
 
-	// Done : getNearPlace order by
+
 	// TODO : update place
 
 	return e

@@ -39,7 +39,7 @@ func GetSubwayList(c echo.Context) error {
 
 // GetNearFoodiePlace func
 func GetNearFoodiePlace(c echo.Context) error {
-	subwayName := c.Param("subway")
+	subwayName := c.FormValue("subway")
 	shopType := "foodie"
 
 	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
@@ -47,12 +47,12 @@ func GetNearFoodiePlace(c echo.Context) error {
 
 	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
 
-	return c.JSON(http.StatusOK, AllPointDis)
+	return c.JSON(http.StatusOK, AllPointDis[:10])
 }
 
 // GetNearShopPlace func
 func GetNearShopPlace(c echo.Context) error {
-	subwayName := c.Param("subway")
+	subwayName := c.FormValue("subway")
 	shopType := "shopping"
 
 	subWayLatLng := mysql.GetSubwayLatLng(subwayName)

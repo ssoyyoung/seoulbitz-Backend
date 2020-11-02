@@ -140,7 +140,6 @@ func GetSubwayLatLng(subwayName string) m.Subway {
 	query := "SELECT xpoint_wgs, ypoint_wgs, station_nm, station_cd, line_num, fr_code, cyber_st_code FROM `subway` WHERE station_nm=?"
 	err := DB.QueryRow(query, subwayName).Scan(&subway.XpointWgs, &subway.YpointWgs, &subway.StationNm, &subway.StationCd, &subway.LineNum, &subway.FrCode, &subway.CyberStCode)
 	utils.CheckErr(err)
-
 	return subway
 }
 
