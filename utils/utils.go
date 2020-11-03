@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"log"
+	"fmt"
 	"math"
 	"sort"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 // CheckErr func
 func CheckErr(err error) {
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 }
 
