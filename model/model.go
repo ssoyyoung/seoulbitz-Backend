@@ -2,7 +2,7 @@ package model
 
 // DBinfo strutct
 type DBinfo struct {
-	Username string 
+	Username string
 	Password string
 	Hostname string
 	Port     string
@@ -19,6 +19,7 @@ type Foodie struct {
 	Addr    string
 	Insta   string
 	Thumb   string
+	Uniq    string
 }
 
 // Shopping struct
@@ -31,6 +32,7 @@ type Shopping struct {
 	Addr    string
 	Insta   string
 	Thumb   string
+	Uniq    string
 }
 
 // Subway struct
@@ -56,19 +58,20 @@ type PlaceLatLng struct {
 
 // TwoPointDistance struct
 type TwoPointDistance struct {
-	Title string
-	Distance    float64
+	Title    string
+	Distance float64
 }
 
 // NearPlace func
 type NearPlace struct {
-	Xpoint  string
-	Ypoint  string
-	Title   string
-	Tag     string
-	LikeCnt string
-	Addr    string
-	Insta   string
-	Thumb   string
+	Xpoint   string
+	Ypoint   string
+	Title    string
+	Tag      string
+	LikeCnt  string
+	Addr     string
+	Insta    string
+	Thumb    string
 	Distance float64
+	Uniq     string
 }

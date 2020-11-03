@@ -2,6 +2,8 @@ package handler
 
 import (
 	"fmt"
+	"strings"
+
 	//"encoding/json"
 	"net/http"
 
@@ -15,6 +17,11 @@ import (
 func GetFoodieList(c echo.Context) error {
 	FoodieList := mysql.GetFoodieList()
 
+	for idx, foodie := range FoodieList {
+		uniq := strings.Split(foodie.Insta, "/")[4]
+		FoodieList[idx].Uniq = uniq
+	}
+
 	fmt.Printf("Total Foodie's list count is %d \n", len(FoodieList))
 
 	return c.JSON(http.StatusOK, FoodieList)
@@ -23,6 +30,11 @@ func GetFoodieList(c echo.Context) error {
 // GetShoppingList func
 func GetShoppingList(c echo.Context) error {
 	shoppingList := mysql.GetShoppingList()
+
+	for idx, shop := range shoppingList {
+		uniq := strings.Split(shop.Insta, "/")[4]
+		shoppingList[idx].Uniq = uniq
+	}
 
 	fmt.Printf("Total shopping's list count is %d \n", len(shoppingList))
 
@@ -56,9 +68,12 @@ func GetNearFoodiePlace(c echo.Context) error {
 		kvale[Point.Title] = Point.Distance
 	}
 
-	infos := mysql.GetInfos("foodie",resultPlace)
+	infos := mysql.GetInfos("foodie", resultPlace)
 	for idx, info := range infos {
 		infos[idx].Distance = kvale[info.Title]
+
+		uniq := strings.Split(info.Insta, "/")[4]
+		infos[idx].Uniq = uniq
 	}
 
 	return c.JSON(http.StatusOK, infos)
@@ -82,9 +97,12 @@ func GetNearShopPlace(c echo.Context) error {
 		kvale[Point.Title] = Point.Distance
 	}
 
-	infos := mysql.GetInfos("shopping",resultPlace)
+	infos := mysql.GetInfos("shopping", resultPlace)
 	for idx, info := range infos {
 		infos[idx].Distance = kvale[info.Title]
+
+		uniq := strings.Split(info.Insta, "/")[4]
+		infos[idx].Uniq = uniq
 	}
 
 	return c.JSON(http.StatusOK, infos)

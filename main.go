@@ -1,8 +1,9 @@
 package main
 
 import (
-	router "github.com/ssoyyoung.p/seoulbitz-Backend/router"
 	"fmt"
+
+	router "github.com/ssoyyoung.p/seoulbitz-Backend/router"
 )
 
 func main() {
