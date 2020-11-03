@@ -2,7 +2,7 @@ package model
 
 // DBinfo strutct
 type DBinfo struct {
-	Username string
+	Username string 
 	Password string
 	Hostname string
 	Port     string
@@ -56,6 +56,19 @@ type PlaceLatLng struct {
 
 // TwoPointDistance struct
 type TwoPointDistance struct {
-	Destination string
+	Title string
 	Distance    float64
+}
+
+// NearPlace func
+type NearPlace struct {
+	Xpoint  string
+	Ypoint  string
+	Title   string
+	Tag     string
+	LikeCnt string
+	Addr    string
+	Insta   string
+	Thumb   string
+	Distance float64
 }

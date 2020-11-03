@@ -201,14 +201,14 @@ func InsertShop(shopping *m.Shopping) string {
 }
 
 // GetInfos func
-func GetInfos(dbName string, places []string) []m.Foodie {
+func GetInfos(dbName string, places []string) []m.NearPlace {
 	DB := ConnectDB()
 	defer DB.Close()
 
 	placeList := strings.Join(places, "','")
 
-	var Foodie m.Foodie
-	var allFoodie []m.Foodie
+	var Foodie m.NearPlace
+	var allFoodie []m.NearPlace
 
 	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM "+ dbName +" WHERE title IN ('"+placeList+"')"
 	fmt.Println(query)

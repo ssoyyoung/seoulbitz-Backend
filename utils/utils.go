@@ -70,7 +70,7 @@ func CalculateDistance(subwayName string, subWayLatLng m.Subway, placeList []m.P
 			"K",
 		)
 
-		PointDis.Destination = place.Title
+		PointDis.Title = place.Title
 		PointDis.Distance = distance
 
 		AllPointDis = append(AllPointDis, PointDis)
@@ -89,7 +89,7 @@ func OrderedValue(AllPointDis []m.TwoPointDistance) []m.TwoPointDistance {
 	value := m.TwoPointDistance{}
 
 	for _, val := range AllPointDis {
-		orderVal[val.Distance] = val.Destination
+		orderVal[val.Distance] = val.Title
 	}
 
 	keys := make([]float64, 0)
@@ -100,7 +100,7 @@ func OrderedValue(AllPointDis []m.TwoPointDistance) []m.TwoPointDistance {
 	sort.Float64s(keys)
 
 	for _, k := range keys {
-		value.Destination = orderVal[k]
+		value.Title = orderVal[k]
 		value.Distance = k
 
 		returnVal = append(returnVal, value)

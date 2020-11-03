@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	//"encoding/json"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -48,14 +49,19 @@ func GetNearFoodiePlace(c echo.Context) error {
 	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
 
 	var resultPlace []string
+	kvale := map[string]float64{}
+
 	for _, Point := range AllPointDis[:10] {
-		resultPlace = append(resultPlace, Point.Destination)
+		resultPlace = append(resultPlace, Point.Title)
+		kvale[Point.Title] = Point.Distance
 	}
 
 	infos := mysql.GetInfos("foodie",resultPlace)
-	fmt.Println(infos)
+	for idx, info := range infos {
+		infos[idx].Distance = kvale[info.Title]
+	}
 
-	return c.JSON(http.StatusOK, AllPointDis[:10])
+	return c.JSON(http.StatusOK, infos)
 }
 
 // GetNearShopPlace func
@@ -68,7 +74,20 @@ func GetNearShopPlace(c echo.Context) error {
 
 	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
 
-	return c.JSON(http.StatusOK, AllPointDis)
+	var resultPlace []string
+	kvale := map[string]float64{}
+
+	for _, Point := range AllPointDis[:10] {
+		resultPlace = append(resultPlace, Point.Title)
+		kvale[Point.Title] = Point.Distance
+	}
+
+	infos := mysql.GetInfos("shopping",resultPlace)
+	for idx, info := range infos {
+		infos[idx].Distance = kvale[info.Title]
+	}
+
+	return c.JSON(http.StatusOK, infos)
 }
 
 // InsertFoodie func
