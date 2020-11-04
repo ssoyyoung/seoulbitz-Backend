@@ -31,9 +31,9 @@ func Router() *echo.Echo {
 	}
 
 	getNearPlace := e.Group("/getNear")
-	{	
-		getNearPlace.POST("/foodie", handler.GetNearFoodiePlace)
-		getNearPlace.POST("/shop", handler.GetNearShopPlace)
+	{
+		getNearPlace.POST("/foodie", handler.GetNearFoodiePlace) //FormValue:subway
+		getNearPlace.POST("/shop", handler.GetNearShopPlace)     //FormValue:subway
 	}
 
 	insertData := e.Group("/insert")
@@ -41,7 +41,6 @@ func Router() *echo.Echo {
 		insertData.POST("/foodie", handler.InsertFoodie)
 		insertData.POST("/shop", handler.InsertShop)
 	}
-
 
 	// TODO : update place
 

@@ -88,6 +88,9 @@ func GetNearShopPlace(c echo.Context) error {
 	shopType := "shopping"
 
 	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
+	if subWayLatLng.StationNm == "" {
+		return c.String(http.StatusOK, "올바른 지하철역의 이름을 다시 입력해주세요")
+	}
 	placeList := mysql.GetPlaceLatLng(shopType)
 
 	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
