@@ -211,7 +211,7 @@ func GetInfos(dbName string, places []string) []m.NearPlace {
 	var allFoodie []m.NearPlace
 
 	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM "+ dbName +" WHERE title IN ('"+placeList+"')"
-	fmt.Println(query)
+	
 	rows, err := DB.Query(query)
 	utils.CheckErr(err)
 
