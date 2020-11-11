@@ -46,17 +46,28 @@ func GetShoppingList(c echo.Context) error {
 func GetPlaceList(c echo.Context) error {
 	placeList := mysql.GetPlaceList()
 	page := c.Param("page")
-
-	var p int
+	fmt.Println(page)
 
 	for idx, place := range placeList {
 		uniq := strings.Split(place.Insta, "/")[4]
 		placeList[idx].Uniq = uniq
 	}
 
+	lastPage := len(placeList) / 20
 	if page != "all" {
-		p, _ = strconv.Atoi(page)
-		placeList = placeList[20*p : 20*(p+1)]
+		p, err := strconv.Atoi(page)
+		if err != nil {
+			return c.String(http.StatusOK, "올바른 페이지값을 입력해주세요.")
+		}
+
+		switch {
+		case p < lastPage:
+			placeList = placeList[20*p : 20*(p+1)]
+		case p == lastPage:
+			placeList = placeList[20*p:]
+		case p > lastPage:
+			return c.String(http.StatusOK, "마지막페이지입니다.")
+		}
 	}
 
 	fmt.Printf("Total place's count is %d \n", len(placeList)) // fmt.Printf("%d") : 정수형
