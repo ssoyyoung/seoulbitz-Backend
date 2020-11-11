@@ -41,6 +41,19 @@ func GetShoppingList(c echo.Context) error {
 	return c.JSON(http.StatusOK, shoppingList)
 }
 
+// GetPlaceList func
+func GetPlaceList(c echo.Context) error {
+	placeList := mysql.GetPlaceList()
+
+	for idx, place := range placeList {
+		uniq := strings.Split(place.Insta, "/")[4]
+		placeList[idx].Uniq = uniq
+	}
+
+	fmt.Printf("Total place's count is %d \n", len(placeList)) // fmt.Printf("%d") : 정수형
+	return c.JSON(http.StatusOK, placeList)
+}
+
 // GetSubwayList func
 func GetSubwayList(c echo.Context) error {
 	subwayList := mysql.GetSubwayList()
@@ -104,6 +117,38 @@ func GetNearShopPlace(c echo.Context) error {
 	}
 
 	infos := mysql.GetInfos("shopping", resultPlace)
+	for idx, info := range infos {
+		infos[idx].Distance = kvale[info.Title]
+
+		uniq := strings.Split(info.Insta, "/")[4]
+		infos[idx].Uniq = uniq
+	}
+
+	return c.JSON(http.StatusOK, infos)
+}
+
+// GetNearPlaceList func
+func GetNearPlaceList(c echo.Context) error {
+	subwayName := c.FormValue("subway")
+	shopType := "placeList"
+
+	subWayLatLng := mysql.GetSubwayLatLng(subwayName)
+	if subWayLatLng.StationNm == "" {
+		return c.String(http.StatusOK, "올바른 지하철역의 이름을 다시 입력해주세요")
+	}
+	placeList := mysql.GetPlaceLatLng(shopType)
+
+	AllPointDis := utils.CalculateDistance(subwayName, subWayLatLng, placeList)
+
+	var resultPlace []string
+	kvale := map[string]float64{}
+
+	for _, Point := range AllPointDis[:10] {
+		resultPlace = append(resultPlace, Point.Title)
+		kvale[Point.Title] = Point.Distance
+	}
+
+	infos := mysql.GetPlaceInfos(shopType, resultPlace)
 	for idx, info := range infos {
 		infos[idx].Distance = kvale[info.Title]
 

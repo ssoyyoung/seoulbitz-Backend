@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"time"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql" // go get -u github.com/go-sql-driver/mysql
 	m "github.com/ssoyyoung.p/seoulbitz-Backend/model"
@@ -105,6 +105,30 @@ func GetShoppingList() []m.Shopping {
 	}
 
 	return allShops
+}
+
+// GetPlaceList func
+func GetPlaceList() []m.Place {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	var place m.Place
+	var allPlaces []m.Place
+
+	query := "SELECT xpoint, ypoint, title, like_cnt, addr, insta, thumb1, thumb2 FROM `placeList`"
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	defer rows.Close()
+
+	for rows.Next() {
+		err := rows.Scan(&place.Xpoint, &place.Ypoint, &place.Title, &place.LikeCnt, &place.Addr, &place.Insta, &place.Thumb1, &place.Thumb2)
+		utils.CheckErr(err)
+
+		allPlaces = append(allPlaces, place)
+	}
+
+	return allPlaces
 }
 
 // GetSubwayList func
@@ -210,18 +234,44 @@ func GetInfos(dbName string, places []string) []m.NearPlace {
 	var Foodie m.NearPlace
 	var allFoodie []m.NearPlace
 
-	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM "+ dbName +" WHERE title IN ('"+placeList+"')"
-	
+	query := "SELECT xpoint, ypoint, title, tag, like_cnt, addr, insta, thumb FROM " + dbName + " WHERE title IN ('" + placeList + "')"
+
 	rows, err := DB.Query(query)
 	utils.CheckErr(err)
 
 	for rows.Next() {
 		err := rows.Scan(&Foodie.Xpoint, &Foodie.Ypoint, &Foodie.Title, &Foodie.Tag,
-						&Foodie.LikeCnt, &Foodie.Addr, &Foodie.Insta, &Foodie.Thumb)
+			&Foodie.LikeCnt, &Foodie.Addr, &Foodie.Insta, &Foodie.Thumb)
 		utils.CheckErr(err)
 
 		allFoodie = append(allFoodie, Foodie)
 	}
 
 	return allFoodie
+}
+
+// GetPlaceInfos func
+func GetPlaceInfos(dbName string, places []string) []m.Place {
+	DB := ConnectDB()
+	defer DB.Close()
+
+	placeList := strings.Join(places, "','")
+
+	var place m.Place
+	var allPlaces []m.Place
+
+	query := "SELECT xpoint, ypoint, title, like_cnt, addr, insta, thumb1, thumb2 FROM " + dbName + " WHERE title IN ('" + placeList + "')"
+
+	rows, err := DB.Query(query)
+	utils.CheckErr(err)
+
+	for rows.Next() {
+		err := rows.Scan(&place.Xpoint, &place.Ypoint, &place.Title,
+			&place.LikeCnt, &place.Addr, &place.Insta, &place.Thumb1, &place.Thumb2)
+		utils.CheckErr(err)
+
+		allPlaces = append(allPlaces, place)
+	}
+
+	return allPlaces
 }

@@ -27,6 +27,7 @@ func Router() *echo.Echo {
 	{
 		getData.GET("/foodie", handler.GetFoodieList)
 		getData.GET("/shop", handler.GetShoppingList)
+		getData.GET("/place", handler.GetPlaceList)
 		getData.GET("/subway", handler.GetSubwayList)
 	}
 
@@ -34,6 +35,7 @@ func Router() *echo.Echo {
 	{
 		getNearPlace.POST("/foodie", handler.GetNearFoodiePlace) //FormValue:subway
 		getNearPlace.POST("/shop", handler.GetNearShopPlace)     //FormValue:subway
+		getNearPlace.POST("/place", handler.GetNearPlaceList)    //FormValue:subway
 	}
 
 	insertData := e.Group("/insert")
