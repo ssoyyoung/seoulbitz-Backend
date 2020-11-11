@@ -54,7 +54,7 @@ func GetPlaceList(c echo.Context) error {
 		placeList[idx].Uniq = uniq
 	}
 
-	if page != "" {
+	if page != "all" {
 		p, _ = strconv.Atoi(page)
 		placeList = placeList[20*p : 20*(p+1)]
 	}
