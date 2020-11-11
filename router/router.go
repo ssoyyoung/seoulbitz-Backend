@@ -27,7 +27,7 @@ func Router() *echo.Echo {
 	{
 		getData.GET("/foodie", handler.GetFoodieList)
 		getData.GET("/shop", handler.GetShoppingList)
-		getData.GET("/place", handler.GetPlaceList)
+		getData.GET("/place/:page", handler.GetPlaceList)
 		getData.GET("/subway", handler.GetSubwayList)
 	}
 

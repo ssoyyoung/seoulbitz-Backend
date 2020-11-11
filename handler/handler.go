@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	//"encoding/json"
@@ -44,10 +45,18 @@ func GetShoppingList(c echo.Context) error {
 // GetPlaceList func
 func GetPlaceList(c echo.Context) error {
 	placeList := mysql.GetPlaceList()
+	page := c.Param("page")
+
+	var p int
 
 	for idx, place := range placeList {
 		uniq := strings.Split(place.Insta, "/")[4]
 		placeList[idx].Uniq = uniq
+	}
+
+	if page != "" {
+		p, _ = strconv.Atoi(page)
+		placeList = placeList[20*p : 20*(p+1)]
 	}
 
 	fmt.Printf("Total place's count is %d \n", len(placeList)) // fmt.Printf("%d") : 정수형
